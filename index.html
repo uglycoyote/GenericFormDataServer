@@ -1,0 +1,44 @@
+
+<html>
+
+<style>
+	body
+	{
+		font-size:10px;
+		font-family: helvetica;
+	}
+</style>
+
+<body>
+	<h2>Static Form Interface - Boring!</h2>
+
+	<div>
+	<h3>Post a new record</h3>
+
+	<p>This form sends records containing the following two fields to the server, but you could add any fields you wanted and the server would remember all of the data in the form.</p>
+
+	<form action="post" method="POST">
+		<p>Name<input name="name" type="text"></input></p>
+		<p>Note<input name="note" type="text"></input></p>
+		<input type="submit">Submit</input>
+	</form>
+
+	<hr>
+
+	<h3>Remove a record</h3>
+
+	<p>The server will remove all records which match the name you enter below.</p>
+
+	<form action="remove" method="POST">
+		<p>Name<input name="name" type="text"></input></p>
+		<input type="submit">Submit</input>
+	</form>
+
+	<hr> 
+
+	<a href="/dynamic.html">Try the dynamic interface</a>
+
+</body>
+
+
+</html>

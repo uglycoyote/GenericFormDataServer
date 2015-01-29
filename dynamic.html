@@ -1,0 +1,143 @@
+
+<html>
+
+<style>
+	body
+	{
+		font-size:10px;
+		font-family: helvetica;
+	}
+
+	.note
+	{
+		width:200px;
+		background-color: gray;
+		border-style: solid;
+		border-width: 1px;
+		border-color: black;
+		padding:10px;
+		margin: 10px;
+	}
+
+</style>
+
+
+<body>
+	<h2>Dynamic Interface - Welcome to the 21st Century!</h3>
+
+	<div id="dynamicInterface">
+		<p>Name<input id="name" name="name" type="text"></input></p>
+		<p>Note<input id="note" name="note" type="text"></input></p>
+
+	</div>
+</body>
+
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+
+<script>
+
+$( document ).ready(function() 
+{
+	var dynamicInterface = $( "#dynamicInterface" )
+
+	notesField = $("input#note")
+
+	// When user presses inter in the notes box, post the data
+	notesField.bind("enterKey",postData);
+
+	// Define the enterKey event.
+	notesField.keyup(function(e)
+	{
+	    if(e.keyCode == 13)
+	    {
+	        $(this).trigger("enterKey");
+	    }
+	});
+
+	dynamicInterface.append("<h4>Raw Data</h4>" )
+	pre = $("<pre id='data'>").appendTo(dynamicInterface)
+
+	dynamicInterface.append("<h4>Cooked Data</h4>" )
+	pre = $("<div id='cooked'>").appendTo(dynamicInterface)
+
+	getData()
+
+	// Poll for new data every second.
+	setInterval( getData, 1000 )
+
+})
+
+
+function getData()
+{
+	var url = "/data"
+	$.get( url, undefined, onDataReceived ) 
+}
+
+function onDataReceived( data )
+{
+	$("#data").text( JSON.stringify(data, undefined, 4) )
+
+	cookedDiv = $("#cooked")
+	cookedDiv.empty()
+	if ( data  )
+	{
+		for ( var i=0; i<data.length; i++ )
+		{
+			elementDiv = $("<div class='note'>").appendTo( cookedDiv )
+			elementDiv.html( data[i].name + "<br>" + data[i].note )
+			elementDiv.append("<hr>")
+			var button = $("<button>").appendTo(elementDiv)
+			button.text("remove")
+			button.click( removeData(data[i].name, data[i].id) )
+		}
+	}
+
+}
+
+// GUID generator.
+// Thanks broofa
+//  http://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript
+function createUniqueID()
+{
+	var guid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+    return v.toString(16);
+	});
+
+	return guid;
+}
+
+function postData()
+{
+	var data = {}
+
+	data["name"] = $("#name").val();
+	data["note"] = $("#note").val();
+	data["id"] = createUniqueID();
+
+	var url = "/post"
+	$.post( url, data )
+}
+
+function removeData( name, id )
+{
+	return function()
+	{
+		var data = {}
+
+		if ( id != undefined )
+		{
+			data["id"] = id
+		}
+		data["name"] = name;
+
+		var url = "/remove"
+		$.post( url, data )
+	}
+}
+
+</script>
+
+</html>
