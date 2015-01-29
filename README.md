@@ -3,6 +3,8 @@
 Generic Form Data server for python 2.x
 by Mike Cline
 
+see the blog post about this [here](https://eigenvector.wordpress.com/2015/01/29/very-simple-python-twitter-clone-with-ajax-front-end/)
+
 extremely simple HTTP server supporting the following queries:
 
 **POST /post**
