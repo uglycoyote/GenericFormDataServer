@@ -109,6 +109,8 @@ class myHandler(BaseHTTPRequestHandler):
 
 			formData = { key : form[key].value for key in form }
 
+			# We should remove a data element if it matches all of the key-value pairs
+			#  in the formData
 			def shouldRemove( storedFormData ):
 				return all ( (key in storedFormData and storedFormData[key]==formData[key]) for key in formData ) 			
 

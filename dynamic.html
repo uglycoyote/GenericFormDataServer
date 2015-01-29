@@ -77,17 +77,22 @@ function getData()
 
 function onDataReceived( data )
 {
+	// display pretty-printed json in HTML pre tag.
 	$("#data").text( JSON.stringify(data, undefined, 4) )
 
+	// display one div per entry in the data
 	cookedDiv = $("#cooked")
 	cookedDiv.empty()
 	if ( data  )
 	{
 		for ( var i=0; i<data.length; i++ )
 		{
+			// Create a div containing the 'name' and 'note' fields
 			elementDiv = $("<div class='note'>").appendTo( cookedDiv )
 			elementDiv.html( data[i].name + "<br>" + data[i].note )
 			elementDiv.append("<hr>")
+
+			// add button to this div for removing this specific data entry.
 			var button = $("<button>").appendTo(elementDiv)
 			button.text("remove")
 			button.click( removeData(data[i].name, data[i].id) )
